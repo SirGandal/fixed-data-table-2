@@ -75,7 +75,7 @@ class FixedDataTableCellDefault extends React.Component {
 
   render() {
     //Remove some props like columnKey and rowIndex so we don't pass it into the div
-    var {height, width, style, className, children, columnKey, rowIndex, ...props} = this.props;
+    var { height, width, style, className, children, columnKey, rowIndex, ...props } = this.props;
 
     var innerStyle = {
       height,
@@ -84,31 +84,14 @@ class FixedDataTableCellDefault extends React.Component {
     };
 
     return (
-      <div
-        {...props}
+      <div {...props}
         className={joinClasses(
-          cx('fixedDataTableCellLayout/wrap1'),
-          cx('public/fixedDataTableCell/wrap1'),
+          cx('public/fixedDataTableCell/cellContent'),
           className,
         )}
         style={innerStyle}>
-        <div
-          className={joinClasses(
-            cx('fixedDataTableCellLayout/wrap2'),
-            cx('public/fixedDataTableCell/wrap2'),
-          )}>
-          <div
-            className={joinClasses(
-              cx('fixedDataTableCellLayout/wrap3'),
-              cx('public/fixedDataTableCell/wrap3'),
-            )}>
-            <div className={cx('public/fixedDataTableCell/cellContent')}>
-              {children}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+        {children}
+      </div>);
   }
 }
 
