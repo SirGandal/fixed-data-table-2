@@ -70,12 +70,17 @@ class FixedDataTableCellDefault extends React.Component {
      * Below that entry point the user is welcome to consume or
      * pass the prop through at their discretion.
      */
-    rowIndex: PropTypes.number
+    rowIndex: PropTypes.number,
+
+    /**
+     * Role to describe the type of cell presented.
+     */
+    ariaRole: PropTypes.oneOf(['columnheader', 'gridcell', 'rowheader']),
   };
 
   render() {
     //Remove some props like columnKey and rowIndex so we don't pass it into the div
-    var { height, width, style, className, children, columnKey, rowIndex, ...props } = this.props;
+    var { height, width, ariaRole, style, className, children, columnKey, rowIndex, ...props } = this.props;
 
     var innerStyle = {
       height,
@@ -85,6 +90,7 @@ class FixedDataTableCellDefault extends React.Component {
 
     return (
       <div {...props}
+        role={ariaRole}
         className={joinClasses(
           cx('public/fixedDataTableCell/cellContent'),
           className,
@@ -93,6 +99,10 @@ class FixedDataTableCellDefault extends React.Component {
         {children}
       </div>);
   }
+}
+
+FixedDataTableCellDefault.defaultProps = {
+  ariaRole: 'gridcell',
 }
 
 module.exports = FixedDataTableCellDefault;
