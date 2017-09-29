@@ -367,6 +367,33 @@ var FixedDataTable = createReactClass({
      * half of the number of visible rows.
      */
     bufferRowCount: PropTypes.number,
+
+    /**
+     * Represents a block of content in the web page.
+     */
+    ariaRole: PropTypes.string,
+
+    /**
+     * Indicates that the element is not editable, but is otherwise operable.
+     */
+    ariaReadonly: PropTypes.bool,
+
+    /**
+     * A string that labels the table.
+     */
+    ariaLabel: PropTypes.string,
+
+    /**
+     * Identifies the text that labels the current table.
+     * If the label is not visible on the screen, use aria-label instead.
+     */
+    ariaLabelledBy: PropTypes.string,
+
+    /**
+     * Identifies the text that describes the current table. This attribute is
+     * similar to ariaLabelledBy but should provide more verbose information.
+     */
+    ariaDescribedBy: PropTypes.string,
   },
 
   getDefaultProps() /*object*/ {
@@ -686,6 +713,11 @@ var FixedDataTable = createReactClass({
 
     return (
       <div
+        role={this.props.ariaRole}
+        aria-readonly={this.props.ariaReadonly}
+        aria-label={this.props.ariaLabel}
+        aria-labelledby={this.props.ariaLabelledBy}
+        aria-describedby={this.props.ariaDescribedBy}
         className={joinClasses(
           this.state.className,
           cx('fixedDataTableLayout/main'),
