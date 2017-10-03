@@ -322,6 +322,21 @@ var FixedDataTable = createReactClass({
     onRowMouseLeave: PropTypes.func,
 
     /**
+     * Callback that is called when a touch-start event happens on a row.
+     */
+    onRowTouchStart: PropTypes.func,
+
+    /**
+     * Callback that is called when a touch-end event happens on a row.
+     */
+    onRowTouchEnd: PropTypes.func,
+
+    /**
+     * Callback that is called when a touch-move event happens on a row.
+     */
+    onRowTouchMove: PropTypes.func,
+
+    /**
      * Callback that is called when resizer has been released
      * and column needs to be updated.
      *
@@ -764,6 +779,9 @@ var FixedDataTable = createReactClass({
         onRowMouseUp={state.onRowMouseUp}
         onRowMouseEnter={state.onRowMouseEnter}
         onRowMouseLeave={state.onRowMouseLeave}
+        onRowTouchStart={state.onRowTouchStart}
+        onRowTouchEnd={state.onRowTouchEnd}
+        onRowTouchMove={state.onRowTouchMove}
         rowClassNameGetter={state.rowClassNameGetter}
         rowsCount={state.rowsCount}
         rowGetter={state.rowGetter}
