@@ -12,162 +12,186 @@ export as namespace FixedDataTable;
 export = FixedDataTable;
 
 declare namespace FixedDataTable {
-    export const version: string;
+  export const version: string;
 
-    export interface TableProps extends React.Props<Table> {
-       
-        width: number;
+  export interface TableProps extends React.Props<Table> {
+    width: number;
 
-        height?: number;
+    height?: number;
 
-        className?: string;
+    className?: string;
 
-        maxHeight?: number;
+    maxHeight?: number;
 
-        ownerHeight?: number;
+    ownerHeight?: number;
 
-        overflowX?: 'hidden' | 'auto';
+    overflowX?: "hidden" | "auto";
 
-        overflowY?: 'hidden' | 'auto';
+    overflowY?: "hidden" | "auto";
 
-        touchScrollEnabled?: boolean;
+    touchScrollEnabled?: boolean;
 
-        showScrollbarX?: boolean,
-        
-        showScrollbarY?: boolean,
+    showScrollbarX?: boolean;
 
-        onHorizontalScroll?: (xScrollPosition: number) => boolean,
-    
-        onVerticalScroll?: (yScrollPosition: number) => boolean,
+    showScrollbarY?: boolean;
 
-        rowsCount: number;
+    onHorizontalScroll?: (xScrollPosition: number) => boolean;
 
-        rowHeight: number;
+    onVerticalScroll?: (yScrollPosition: number) => boolean;
 
-        rowHeightGetter?: (index: number) => number;
+    rowsCount: number;
 
-        subRowHeight?: number;
+    rowHeight: number;
 
-        subRowHeightGetter?: (index: number) => number,
+    rowHeightGetter?: (index: number) => number;
 
-        rowExpanded?: React.ReactElement<any> | ((rowProps: {
-            rowIndex: number,
-            height: number,
-            width: number
-        }) => React.ReactElement<any>),
+    subRowHeight?: number;
 
-        rowClassNameGetter?: (index: number) => string;
+    subRowHeightGetter?: (index: number) => number;
 
-        rowKeyGetter?: (index: number) => string;
+    rowExpanded?:
+      | React.ReactElement<any>
+      | ((props: RowProps) => React.ReactElement<any>);
 
-        groupHeaderHeight?: number;
+    rowClassNameGetter?: (index: number) => string;
 
-        headerHeight?: number;
+    rowKeyGetter?: (index: number) => string;
 
-        footerHeight?: number;
+    groupHeaderHeight?: number;
 
-        scrollLeft?: number;
+    headerHeight?: number;
 
-        scrollToColumn?: number;
+    footerHeight?: number;
 
-        scrollTop?: number;
+    scrollLeft?: number;
 
-        scrollToRow?: number;
+    scrollToColumn?: number;
 
-        onScrollStart?: (x: number, y: number) => void;
+    scrollTop?: number;
 
-        onScrollEnd?: (x: number, y: number) => void;
+    scrollToRow?: number;
 
-        stopScrollPropagation?: boolean,
+    onScrollStart?: (x: number, y: number) => void;
 
-        onContentHeightChange?: (newHeight: number) => void;
+    onScrollEnd?: (x: number, y: number) => void;
 
-        onRowClick?: (event: React.SyntheticEvent<Table>, rowIndex: number) => void;
+    stopScrollPropagation?: boolean;
 
-        onRowDoubleClick?: (event: React.SyntheticEvent<Table>, rowIndex: number) => void;
+    onContentHeightChange?: (newHeight: number) => void;
 
-        onRowMouseDown?: (event: React.SyntheticEvent<Table>, rowIndex: number) => void;
+    onRowClick?: rowEventCallback;
 
-        onRowMouseEnter?: (event: React.SyntheticEvent<Table>, rowIndex: number) => void;
+    onRowDoubleClick?: rowEventCallback;
 
-        onRowMouseLeave?: (event: React.SyntheticEvent<Table>, rowIndex: number) => void;
+    onRowMouseDown?: rowEventCallback;
 
-        onColumnResizeEndCallback?: (newColumnWidth: number, columnKey: string) => void;
+    onRowMouseUp?: rowEventCallback;
 
-        onColumnReorderEndCallback?: (event: 
-            { 
-                columnBefore: string | undefined,
-                columnAfter: string | undefined,
-                reorderColumn: string
-            }) => void;
+    onRowMouseEnter?: rowEventCallback;
 
-        isColumnResizing?: boolean;
-        
-        isColumnReordering?: boolean,
-        
-        bufferRowCount?: number,
-    }
+    onRowMouseLeave?: rowEventCallback;
 
-    interface ColumnProps extends React.Props<Column> {
+    onRowTouchStart?: rowEventCallback;
 
-        align?: 'left' | 'center' | 'right';
+    onRowTouchEnd?: rowEventCallback;
 
-        fixed?: boolean;
+    onRowTouchMove?: rowEventCallback;
 
-        header?: string | React.ReactElement<any> | ((props: GenericCellProps) => (string | React.ReactElement<any>));
-        
-        cell?: string | React.ReactElement<any> | ((props: CellProps) => (string | React.ReactElement<any>));
+    onColumnResizeEndCallback?: (
+      newColumnWidth: number,
+      columnKey: string
+    ) => void;
 
-        footer?: string | React.ReactElement<any> | ((props: GenericCellProps) => (string | React.ReactElement<any>));
+    onColumnReorderEndCallback?: (
+      event: {
+        columnBefore: string | undefined;
+        columnAfter: string | undefined;
+        reorderColumn: string;
+      }
+    ) => void;
 
-        columnKey?: string | number;
+    isColumnResizing?: boolean;
 
-        width: number;
+    isColumnReordering?: boolean;
 
-        minWidth?: number;
+    bufferRowCount?: number;
+  }
 
-        maxWidth?: number;
+  interface ColumnProps extends React.Props<Column> {
+    align?: "left" | "center" | "right";
 
-        flexGrow?: number;
+    fixed?: boolean;
 
-        isResizable?: boolean;
+    header?:
+      | string
+      | React.ReactElement<any>
+      | ((props: GenericCellProps) => string | React.ReactElement<any>);
 
-        isReorderable?: boolean;
+    cell?:
+      | string
+      | React.ReactElement<any>
+      | ((props: CellProps) => string | React.ReactElement<any>);
 
-        allowCellsRecycling?: boolean;
+    footer?:
+      | string
+      | React.ReactElement<any>
+      | ((props: GenericCellProps) => string | React.ReactElement<any>);
 
-        pureRendering?: boolean;
-    }
+    columnKey?: string | number;
 
-    export interface ColumnGroupProps extends React.Props<ColumnGroup> {
+    width: number;
 
-	    align?: 'left' | 'center' | 'right';
+    minWidth?: number;
 
-	    fixed?: boolean;
+    maxWidth?: number;
 
-	    header: string | React.ReactElement<any> | ((props:  {height: number, width: number}) => (string | React.ReactElement<any>));
-    }
+    flexGrow?: number;
 
-    export interface GenericCellProps extends React.HTMLAttributes<Cell> {
-        
-         height?: number;
-         
-         width?: number;
-         
-         columnKey?: string | number;
-     }
+    isResizable?: boolean;
 
-    export interface CellProps extends GenericCellProps {
+    isReorderable?: boolean;
 
-        rowIndex?: number;
-    }
+    allowCellsRecycling?: boolean;
 
-    export class Table extends React.Component<TableProps> {
-    }
-    export class Column extends React.Component<ColumnProps> {
-    }
-    export class ColumnGroup extends React.Component<ColumnGroupProps> {
-    }
-    export class Cell extends React.Component<CellProps> {
-    }
+    pureRendering?: boolean;
+  }
+
+  export interface ColumnGroupProps extends React.Props<ColumnGroup> {
+    align?: "left" | "center" | "right";
+
+    fixed?: boolean;
+
+    header:
+      | string
+      | React.ReactElement<any>
+      | ((
+          props: { height: number; width: number }
+        ) => string | React.ReactElement<any>);
+  }
+
+  interface CellSizeProps extends React.HTMLAttributes<Cell> {
+    height?: number;
+
+    width?: number;
+  }
+
+  interface GenericCellProps extends CellSizeProps {
+    columnKey?: string | number;
+  }
+
+  export interface CellProps extends GenericCellProps {
+    rowIndex?: number;
+  }
+
+  interface RowProps extends CellSizeProps {
+    rowIndex?: number;
+  }
+
+  interface rowEventCallback {
+    (event: React.SyntheticEvent<Table>, rowIndex: number): void;
+  }
+  export class Table extends React.Component<TableProps> {}
+  export class Column extends React.Component<ColumnProps> {}
+  export class ColumnGroup extends React.Component<ColumnGroupProps> {}
+  export class Cell extends React.Component<CellProps> {}
 }
