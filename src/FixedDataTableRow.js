@@ -274,6 +274,10 @@ class FixedDataTableRowImpl extends React.Component {
     this.props.onDoubleClick(event, this.props.index);
   };
 
+  _onMouseUp = (/*object*/ event) => {
+    this.props.onMouseUp(event, this.props.index);
+  };
+
   _onMouseDown = (/*object*/ event) => {
     this.props.onMouseDown(event, this.props.index);
   };
