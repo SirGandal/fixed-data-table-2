@@ -41,6 +41,11 @@ var FixedDataTableColumnReorderHandle = createReactClass({
       PropTypes.string,
       PropTypes.number
     ]),
+
+    /**
+     * Wheteher the reorder handle should respond to touch events or not.
+     */
+    touchEnabled: PropTypes.bool,
   },
 
   getInitialState() /*object*/ {
@@ -71,7 +76,13 @@ var FixedDataTableColumnReorderHandle = createReactClass({
           'fixedDataTableCellLayout/columnReorderContainer': true,
           'fixedDataTableCellLayout/columnReorderContainer/active': false,
         })}
+        // Stop the event from being propagated when touching the handler.
+        // This prevents the rows from moving around when we drag the headers.
+        onTouchStart={e => e.stopPropagation()}
+        onTouchEnd={e => e.stopPropagation()}
+        onTouchMove={e => e.stopPropagation()}
         onMouseDown={this.onMouseDown}
+        onTouchStart={this.onMouseDown}
         style={style}>
       </div>
     );
@@ -80,13 +91,25 @@ var FixedDataTableColumnReorderHandle = createReactClass({
   onMouseDown(event) {
     var targetRect = event.target.getBoundingClientRect();
 
-    var mouseLocationInElement = event.clientX - targetRect.offsetLeft;
+    var x = 0;
+
+    if(!event.clientX) {
+      if(event.touches && event.touches.length > 0) {
+        var touch = event.touches[0];
+        x = touch.clientX;
+      }
+    } else {
+      x = event.clientX;
+    }
+
+    var mouseLocationInElement = x - targetRect.offsetLeft;
     var mouseLocationInRelationToColumnGroup = mouseLocationInElement + event.target.parentElement.offsetLeft;
 
     this._mouseMoveTracker = new DOMMouseMoveTracker(
       this._onMove,
       this._onColumnReorderEnd,
-      document.body
+      document.body,
+      this.props.touchEnabled
     );
     this._mouseMoveTracker.captureMouseMoves(event);
     this.setState({

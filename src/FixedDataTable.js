@@ -500,7 +500,7 @@ var FixedDataTable = createReactClass({
       return false;
     }
 
-    delta = Math.round(delta);
+    delta = Math.round(delta);    
     if (delta === 0) {
       return false;
     }
@@ -669,6 +669,7 @@ var FixedDataTable = createReactClass({
         initialEvent={state.columnResizingData.initialEvent}
         onColumnResizeEnd={props.onColumnResizeEndCallback}
         columnKey={state.columnResizingData.key}
+        touchEnabled={state.touchScrollEnabled}
       />;
 
     var footer = null;
@@ -711,6 +712,7 @@ var FixedDataTable = createReactClass({
         scrollLeft={state.scrollX}
         fixedColumns={state.headFixedColumns}
         scrollableColumns={state.headScrollableColumns}
+        touchEnabled={state.touchScrollEnabled}
         onColumnResize={this._onColumnResize}
         onColumnReorder={onColumnReorder}
         onColumnReorderMove={this._onColumnReorderMove}
@@ -836,6 +838,21 @@ var FixedDataTable = createReactClass({
     /*number|string*/ columnKey,
     /*object*/ event
   ) {
+
+    var x = 0;
+    var y = 0;
+
+    if((!event.clientX || !event.clientY)) {
+      if(event.touches && event.touches.length > 0) {
+        var touch = event.touches[0];
+        x = touch.clientX;
+        y = touch.clientY;  
+      }
+    } else {
+      x = event.clientX;
+      y = event.clientY;
+    }
+
     this.setState({
       isColumnResizing: true,
       columnResizingData: {
@@ -844,8 +861,8 @@ var FixedDataTable = createReactClass({
         minWidth: cellMinWidth,
         maxWidth: cellMaxWidth,
         initialEvent: {
-          clientX: event.clientX,
-          clientY: event.clientY,
+          clientX: x,
+          clientY: y,
           preventDefault: emptyFunction
         },
         key: columnKey
