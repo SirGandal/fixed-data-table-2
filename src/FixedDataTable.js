@@ -840,7 +840,41 @@ var FixedDataTable = createReactClass({
         style={{height: state.height, width: state.width}}>
         <div
           className={cx('fixedDataTableLayout/rowsContainer')}
-          style={{height: rowsContainerHeight, width: state.width}}>
+          style={{height: rowsContainerHeight, width: state.width}}
+          onScroll={e => {
+
+            /**
+             * The on scroll event on this element is called natively
+             * by the browser and it breakes the virtualization/styling.
+             * Here we intercept the native browser scroll event and we
+             * manually invoke the horizontal scroll with a delta large
+             * enough to show the next character in the text area/input.
+             */
+            if (e.nativeEvent.target instanceof HTMLTextAreaElement ||
+              e.nativeEvent.target instanceof HTMLInputElement) {
+              // do not hack the native scroll behavior of text area or input.
+              return;
+            }
+
+            if (e.nativeEvent.target.scrollLeft > 0) {
+              e.nativeEvent.target.scrollLeft = 0;
+              // The +55 below has been found empirically
+              this._onHorizontalScroll(this.state.scrollX + 55);
+            }
+
+            /**
+             * Text areas might fit horizontally but not vertically. 
+             * As a consequence we want to use the same logic as the
+             * one defined above for horizontal scrolling.
+             * Note: Commenting out in our repo since we have logic that
+             * is triggered on vertical scroll that leads to unexpected behaviour.
+             */
+            // if (e.nativeEvent.target.scrollTop > 0) {
+            //   e.nativeEvent.target.scrollTop = 0;
+            //   // The +20 below has been found empirically
+            //   this._onVerticalScroll(this.state.scrollY + 20);
+            // }
+          }}>
           {dragKnob}
           {groupHeader}
           {header}
